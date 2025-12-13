@@ -1,0 +1,59 @@
+kind: ArchitectureSpec
+metadata:
+  name: cdmesh-api-architecture
+  project: cdmesh-api
+  version: 0.1.0
+  updated: 2025-12-13
+  status: draft
+
+# 1. Executive Summary
+summary: >
+  CDMesh API serves as the central contract definition for the Contract-Driven Mesh. 
+  It utilizes KCL (Kubernetes Configuration Language) to define schemas and 
+  policies for the mesh topology, ensuring a GitOps-managed, declarative 
+  source of truth for all downstream systems (Graph Sync, AI Ops, etc.).
+
+# 2. Key Principles
+principles:
+  - name: Contract-First
+    description: API contracts are defined before implementation.
+  - name: Declarative
+    description: Users define "what" the mesh looks like, not "how" to build it.
+  - name: Versioned
+    description: Schemas and policies are version-controlled to ensure stability.
+  - name: Language Agnostic
+    description: While defined in KCL, the contracts can be consumed by tools in any language (Rust, Go, Python).
+
+# 3. Domain Model
+domain:
+  entities:
+    - entity: Mesh
+      description: Top-level tenant or organization.
+      schema_file: discovery/mesh.k
+    - entity: Domain
+      description: Logical business grouping (e.g., Finance, Logistics).
+      schema_file: discovery/domain.k
+    - entity: Product
+      description: A deployable unit or data product within a Domain.
+      schema_file: discovery/product.k
+    - entity: Port
+      description: Input/Output interfaces for a Product (APIs, Topics, Buckets).
+      schema_file: discovery/port.k
+  relationships:
+    - Mesh -[CONTAINS]-> Domain
+    - Domain -[OWNS]-> Product
+    - Product -[EXPOSES]-> Port
+
+# 4. Structure & Organization
+organization:
+  - directory: discovery/
+    description: Core entity definitions (Mesh, Domain, etc.).
+  - directory: policies/
+    description: Governance rules and validation logic.
+
+# 5. Technology Stack
+tech_stack:
+  language: KCL (Kubernetes Configuration Language)
+  tooling: 
+    - kcl-cli (validation, testing)
+    - kcl-language-server (IDE support)

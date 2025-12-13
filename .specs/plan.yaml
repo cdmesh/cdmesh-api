@@ -1,0 +1,62 @@
+kind: DevelopmentPlanSpec
+metadata:
+  name: cdmesh-api-plan
+  project: cdmesh-api
+  version: 0.1.0
+  updated: 2025-12-13
+  status: draft
+
+# 1. Executive Summary
+summary: >
+  This plan details the development of the CDMesh API contracts using KCL. 
+  The primary goal is to provide a robust, versioned, and declarative schema 
+  set that defines the Mesh, Domain, Product, and Port entities, acting as 
+  the authoritative source for the CDMesh Knowledge Graph.
+
+# 2. Roadmap & Tasks
+roadmap:
+  phases:
+    - title: Core Schema Definition
+      description: >
+        Establish the fundamental KCL structs for the primary domain entities.
+      epics:
+        - title: Define Mesh Schema
+          description: Create `discovery/mesh.k` with basic attributes and checks.
+          status: done
+        - title: Define Domain Schema
+          description: Create `discovery/domain.k` with basic attributes and checks.
+          status: done
+        - title: Define Product Schema
+          description: Create `discovery/product.k` including `kind`, `version`, and ownership.
+          status: done
+        - title: Define Port Schema
+          description: Create `discovery/port.k` for Input/Output interfaces.
+          status: done
+        - title: Verify Relationships
+          description: Ensure imports work (e.g., Product importing Port) and hierarchy is logical.
+          status: inProgress
+
+    - title: Validation and Governance
+      description: >
+        Enhance schemas with stricter validation logic and external policies.
+      epics:
+        - title: Enhanced Validation
+          description: Add regex checks for IDs, URN formats, and semantic versioning.
+          status: backlog
+        - title: Governance Policies
+          description: Implement separate policy files to enforce rules (e.g., "All products must have an owner").
+          status: backlog
+
+    - title: Distribution and Integration
+      description: >
+        Prepare the schemas for consumption by the Graph Sync engine and external users.
+      epics:
+        - title: Package Management
+          description: Configure `kcl.mod` and `kcl.mod.lock` for proper dependency management.
+          status: backlog
+        - title: Example Instances
+          description: Create a `mocks/` or `examples/` directory with valid KCL instances for testing.
+          status: backlog
+        - title: CI/CD Pipeline
+          description: Automated testing and linting of KCL files.
+          status: backlog
