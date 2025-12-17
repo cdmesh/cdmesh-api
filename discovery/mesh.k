@@ -1,21 +1,23 @@
-schema Mesh:
-    """
-    Mesh defines the top-level organization or tenant.
-    It maps to the `mesh` node in the CDMesh Knowledge Graph.
+import ..core.component
 
-    Attributes
-    ----------
-    id: str, required.
-        The unique identifier of the mesh tenant.
-    name: str, required.
-        The name of the organization mesh or tenant.
-    description: str, optional.
-        A description of the mesh.
+schema Mesh(component.Component):
     """
-    id: str
-    name: str
-    description?: str
+    Mesh defines the top-level organizational or tenant boundary in the Data Mesh architecture.
 
-    check:
-        len(id) > 0, "id must not be empty"
-        len(name) > 0, "name must not be empty"
+    In Data Mesh terms, a Mesh represents the entire data ecosystem within an organization,
+    encompassing all domains and their data products. It establishes the scope of the mesh
+    and provides the root context for domain organization and discovery.
+
+    In Domain-Driven Design terms, the Mesh is an Aggregate Root that defines the
+    outermost Bounded Context, containing multiple Domain bounded contexts beneath it.
+    It serves as the organizational partition for multi-tenant deployments.
+
+    Graph Relationships:
+    - CONTAINS → Domain (one-to-many)
+
+    Inherits from Component:
+    - id: Unique mesh identifier
+    - name: Human-readable mesh name
+    - description: Purpose and scope of this mesh
+    - deployment: Deployment specification for mesh-level configuration
+    """

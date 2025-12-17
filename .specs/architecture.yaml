@@ -2,8 +2,8 @@ kind: ArchitectureSpec
 metadata:
   name: cdmesh-api-architecture
   project: cdmesh-api
-  version: 0.1.0
-  updated: 2025-12-13
+  version: 0.2.0
+  updated: 2025-12-17
   status: draft
 
 # 1. Executive Summary
@@ -23,33 +23,110 @@ principles:
     description: Schemas and policies are version-controlled to ensure stability.
   - name: Language Agnostic
     description: While defined in KCL, the contracts can be consumed by tools in any language (Rust, Go, Python).
+  - name: Data Mesh + DDD Hybrid
+    description: Combines Data Mesh principles (Domain Ownership, Data as a Product, Self-Serve Platform) with Domain-Driven Design patterns (Aggregate Roots, Value Objects, Specification Objects, Bounded Contexts).
 
 # 3. Domain Model
 domain:
+  base_schemas:
+    - entity: Component
+      description: Base schema for catalog-managed architectural units (Aggregate Roots with independent lifecycle).
+      schema_file: core/component.k
+      ddd_pattern: Aggregate Root
+      attributes:
+        - id (unique identifier)
+        - name (human-readable name)
+        - description (purpose and scope)
+        - deployment (DeploymentSpec)
+
   entities:
     - entity: Mesh
-      description: Top-level tenant or organization.
+      description: Top-level organizational or tenant boundary encompassing all domains and data products.
       schema_file: discovery/mesh.k
+      ddd_pattern: Aggregate Root (outermost Bounded Context)
+      data_mesh_principle: Defines the scope of the entire data ecosystem
+      inherits_from: Component
     - entity: Domain
-      description: Logical business grouping (e.g., Finance, Logistics).
+      description: Business capability boundary that owns and manages related data products.
       schema_file: discovery/domain.k
+      ddd_pattern: Aggregate Root (Bounded Context)
+      data_mesh_principle: Domain Ownership
+      inherits_from: Component
     - entity: Product
-      description: A deployable unit or data product within a Domain.
+      description: Autonomous, deployable data product treating data as a first-class product.
       schema_file: discovery/product.k
+      ddd_pattern: Aggregate Root
+      data_mesh_principle: Data as a Product
+      inherits_from: Component
+      attributes:
+        - kind (dataset, api, dashboard, algorithm, app)
+        - version (semantic versioning)
+        - status (experimental, live, deprecated)
+        - owner (IAM identity)
+        - ports (list of Port value objects)
+        - dependsOn (list of product dependencies)
     - entity: Port
-      description: Input/Output interfaces for a Product (APIs, Topics, Buckets).
+      description: Interface boundary defining how data flows in or out of a Product.
       schema_file: discovery/port.k
+      ddd_pattern: Value Object (no independent identity)
+      data_mesh_principle: Enables Self-Serve Data Platform through standardized interfaces
+      attributes:
+        - name
+        - description
+        - type (input or output)
+        - format (e.g., sql, rest, parquet)
+        - catalog (optional catalog reference)
+        - schema (optional schema reference)
+
+  specifications:
+    - entity: DeploymentSpec
+      description: Operational context and source configuration for a Component.
+      schema_file: deploy/spec.k
+      ddd_pattern: Specification Object (part of Component aggregate)
+      data_mesh_principle: Enables Self-Serve Platform through declarative deployment
+      attributes:
+        - environment (deployment target)
+        - source (SourceRepository)
+    - entity: SourceRepository
+      description: Git repository location and access configuration.
+      schema_file: deploy/repository.k
+      ddd_pattern: Value Object (immutable descriptor)
+      attributes:
+        - url (required)
+        - branch (optional)
+        - tag (optional)
+        - path (optional)
+        - sshHostFingerprint (optional)
+        - sshPrivateKey (optional)
+
   relationships:
-    - Mesh -[CONTAINS]-> Domain
-    - Domain -[OWNS]-> Product
-    - Product -[EXPOSES]-> Port
+    - Mesh -[CONTAINS]-> Domain (one-to-many)
+    - Domain -[OWNS]-> Product (one-to-many)
+    - Product -[EXPOSES]-> Port (one-to-many, embedded)
+    - Product -[DEPENDS_ON]-> Product (many-to-many)
+    - Component -[HAS]-> DeploymentSpec (one-to-one, embedded)
+    - DeploymentSpec -[REFERENCES]-> SourceRepository (one-to-one, embedded)
 
 # 4. Structure & Organization
 organization:
+  - directory: core/
+    description: Base schemas and foundational types (Component).
+    files:
+      - component.k (Component base schema)
   - directory: discovery/
-    description: Core entity definitions (Mesh, Domain, etc.).
+    description: Catalog-discoverable entity definitions (Mesh, Domain, Product, Port).
+    files:
+      - mesh.k (Mesh schema)
+      - domain.k (Domain schema)
+      - product.k (Product schema)
+      - port.k (Port schema)
+  - directory: deploy/
+    description: Deployment and source repository specifications.
+    files:
+      - spec.k (DeploymentSpec)
+      - repository.k (SourceRepository)
   - directory: policies/
-    description: Governance rules and validation logic.
+    description: Governance rules and validation logic (future work).
 
 # 5. Technology Stack
 tech_stack:

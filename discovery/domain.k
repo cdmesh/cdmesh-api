@@ -1,21 +1,25 @@
-schema Domain:
-    """
-    Domain defines a logical grouping of data products (Business Domain).
-    It maps to the `domain` node in the CDMesh Knowledge Graph.
+import ..core.component
 
-    Attributes
-    ----------
-    id: str, required.
-        The unique identifier of the domain.
-    name: str, required.
-        The name of the domain.
-    description: str, optional.
-        A description of the domain.
+schema Domain(component.Component):
     """
-    id: str
-    name: str
-    description?: str
+    Domain defines a business capability boundary that owns and manages a collection of related data products.
 
-    check:
-        len(id) > 0, "id must not be empty"
-        len(name) > 0, "name must not be empty"
+    In Data Mesh terms, a Domain embodies the principle of Domain Ownership. Each domain
+    represents a cohesive business capability (e.g., Finance, Logistics, Customer) and is
+    responsible for the lifecycle, quality, and discoverability of its data products.
+    Domains are aligned with organizational structure and have dedicated teams.
+
+    In Domain-Driven Design terms, a Domain is a Bounded Context with its own ubiquitous
+    language and model. It encapsulates domain logic and data products that serve both
+    internal domain needs and expose capabilities to other domains through well-defined interfaces.
+
+    Graph Relationships:
+    - Owned by: Mesh (via CONTAINS relationship)
+    - OWNS → Product (one-to-many)
+
+    Inherits from Component:
+    - id: Unique domain identifier
+    - name: Human-readable domain name (e.g., "Finance", "Supply Chain")
+    - description: Business capability and scope
+    - deployment: Deployment specification for domain-level infrastructure
+    """

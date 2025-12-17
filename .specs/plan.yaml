@@ -2,8 +2,8 @@ kind: DevelopmentPlanSpec
 metadata:
   name: cdmesh-api-plan
   project: cdmesh-api
-  version: 0.1.0
-  updated: 2025-12-13
+  version: 0.2.0
+  updated: 2025-12-17
   status: draft
 
 # 1. Executive Summary
@@ -19,37 +19,87 @@ roadmap:
     - title: Core Schema Definition
       description: >
         Establish the fundamental KCL structs for the primary domain entities.
+      status: done
       epics:
+        - title: Define Component Base Schema
+          description: Create `core/component.k` as the base schema for all catalog-managed components.
+          status: done
+          notes: Component serves as Aggregate Root with id, name, description, and deployment attributes.
+        - title: Define DeploymentSpec Schema
+          description: Create `deploy/spec.k` for deployment configuration (Specification Object).
+          status: done
+          notes: Enables declarative deployment with environment and source repository reference.
+        - title: Define SourceRepository Schema
+          description: Create `deploy/repository.k` for Git repository metadata (Value Object).
+          status: done
+          notes: Captures repository location with URL, branch, tag, path, and SSH credentials.
         - title: Define Mesh Schema
-          description: Create `discovery/mesh.k` with basic attributes and checks.
+          description: Create `discovery/mesh.k` inheriting from Component.
           status: done
+          notes: Represents top-level organizational boundary (outermost Bounded Context).
         - title: Define Domain Schema
-          description: Create `discovery/domain.k` with basic attributes and checks.
+          description: Create `discovery/domain.k` inheriting from Component.
           status: done
+          notes: Represents business capability boundary (Bounded Context with Domain Ownership).
         - title: Define Product Schema
-          description: Create `discovery/product.k` including `kind`, `version`, and ownership.
+          description: Create `discovery/product.k` with kind, version, status, ports, and dependencies.
           status: done
+          notes: Autonomous data product (Aggregate Root) embodying Data as a Product principle.
         - title: Define Port Schema
-          description: Create `discovery/port.k` for Input/Output interfaces.
+          description: Create `discovery/port.k` for Input/Output interfaces (Value Object).
           status: done
+          notes: Interface boundary with no independent identity, embedded in Product.
         - title: Verify Relationships
-          description: Ensure imports work (e.g., Product importing Port) and hierarchy is logical.
-          status: inProgress
+          description: Ensure imports work and hierarchy is logical (Mesh → Domain → Product → Port).
+          status: done
+          notes: All relationships verified including Product dependencies (DEPENDS_ON).
+
+    - title: DDD Pattern Implementation
+      description: >
+        Apply Domain-Driven Design patterns and Data Mesh principles to schema documentation.
+      status: done
+      epics:
+        - title: Refine Schema Docstrings
+          description: Enhance all schema docstrings with DDD patterns and Data Mesh principles.
+          status: done
+          notes: |
+            - Mesh: Aggregate Root (outermost Bounded Context)
+            - Domain: Aggregate Root (Bounded Context, Domain Ownership)
+            - Product: Aggregate Root (Data as a Product)
+            - Port: Value Object (no independent identity)
+            - Component: Base Aggregate Root
+            - DeploymentSpec: Specification Object
+            - SourceRepository: Value Object
+        - title: Document Graph Relationships
+          description: Add clear graph relationship documentation to each schema.
+          status: done
+          notes: CONTAINS, OWNS, EXPOSES, DEPENDS_ON relationships documented.
+        - title: Clarify Inheritance Structure
+          description: Document inheritance from Component and embedded object patterns.
+          status: done
+          notes: All discovery entities inherit from Component; ports and specs are embedded.
 
     - title: Validation and Governance
       description: >
         Enhance schemas with stricter validation logic and external policies.
+      status: backlog
       epics:
         - title: Enhanced Validation
-          description: Add regex checks for IDs, URN formats, and semantic versioning.
+          description: Add regex checks for IDs, URN formats, and additional semantic validation.
           status: backlog
+          notes: Currently has semantic versioning validation for Product.version.
         - title: Governance Policies
-          description: Implement separate policy files to enforce rules (e.g., "All products must have an owner").
+          description: Implement separate policy files to enforce federated governance rules.
+          status: backlog
+          notes: Will enforce global (mesh-level) and local (domain-level) policies as code.
+        - title: Security Policies
+          description: Add access control, PII protection, and compliance policy definitions.
           status: backlog
 
     - title: Distribution and Integration
       description: >
         Prepare the schemas for consumption by the Graph Sync engine and external users.
+      status: backlog
       epics:
         - title: Package Management
           description: Configure `kcl.mod` and `kcl.mod.lock` for proper dependency management.
@@ -57,6 +107,11 @@ roadmap:
         - title: Example Instances
           description: Create a `mocks/` or `examples/` directory with valid KCL instances for testing.
           status: backlog
+          notes: Should include examples of complete mesh hierarchies with all relationships.
         - title: CI/CD Pipeline
           description: Automated testing and linting of KCL files.
           status: backlog
+        - title: Graph Sync Integration
+          description: Ensure schemas are compatible with cdmesh-graph-sync consumption.
+          status: backlog
+          notes: Verify sync engine can parse and map to SurrealDB schema.
