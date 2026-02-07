@@ -2,8 +2,11 @@
 .idea/
 .vscode/
 
-# Gemini cache/config
-.gemini/
+# AI Ops
+.aiops
+.claude
+.gemini
+CLAUDE.md
 
 # OS generated files
 .DS_Store

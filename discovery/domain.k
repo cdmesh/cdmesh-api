@@ -1,6 +1,6 @@
-import ..core.component
+import ..core.node
 
-schema Domain(component.Component):
+schema Domain(node.MeshNode):
     """
     Domain defines a business capability boundary that owns and manages a collection of related data products.
 
@@ -13,13 +13,26 @@ schema Domain(component.Component):
     language and model. It encapsulates domain logic and data products that serve both
     internal domain needs and expose capabilities to other domains through well-defined interfaces.
 
+    Hierarchy Position: Level 2
+    Organization → Mesh → Domain → Product → Port
+
     Graph Relationships:
-    - Owned by: Mesh (via CONTAINS relationship)
+    - Contained by: Mesh (via CONTAINS relationship)
     - OWNS → Product (one-to-many)
 
-    Inherits from Component:
+    Inherits from MeshNode:
     - id: Unique domain identifier
     - name: Human-readable domain name (e.g., "Finance", "Supply Chain")
     - description: Business capability and scope
     - deployment: Deployment specification for domain-level infrastructure
+    - policies: Domain-level policies (cascaded from Mesh + local)
+    - semantics: Ontological metadata for the domain
+
+    Attributes
+    ----------
+    meshId: str, optional.
+        Reference to parent Mesh.
+        If specified, this domain inherits policies from the mesh.
+        Required for hierarchical governance.
     """
+    meshId?: str
