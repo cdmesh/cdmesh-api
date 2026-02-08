@@ -293,7 +293,7 @@ CDMesh API is grounded in peer-reviewed research and industry best practices.
 
 - **"Data Mesh: Delivering Data-Driven Value at Scale"** by Zhamak Dehghani (O'Reilly, 2022)
   - Foundation for domain ownership, data as a product, self-serve platform, and federated governance
-- **"Data Contracts: Developing Production-Grade Pipelines at Scale"** by Andrew Jones (Manning, 2024)
+- **"Data Contracts: Developing Production-Grade Pipelines at Scale"** by Chad Sanderson (O'Reilly, 2026)
   - Contract-driven development patterns for data platforms
 
 ### Design Patterns
