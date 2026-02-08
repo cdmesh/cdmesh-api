@@ -8,7 +8,7 @@
 
 CDMesh API serves as the central contract definition for the Contract-Driven Mesh. It implements **Composable Mesh Architecture (CMA)**, providing a universal abstraction that unifies data products, microservices, event streams, and ML pipelines under a single governance framework.
 
-The API utilizes **KCL (Kubernetes Configuration Language)** to define schemas and policies for the mesh topology, ensuring a **GitOps-managed, declarative source of truth** for all downstream systems (Graph Sync, AI Ops, platform adapters).
+The API utilizes **KCL (Kubernetes Configuration Language)** to define schemas and policies for the mesh topology, ensuring a **GitOps-managed, declarative source of truth** for all downstream systems (Graph Sync, AI Ops, platform adapters). This architecture builds upon contemporary data mesh research (Goedegebuure et al., 2023; van der Werf et al., 2025; Kumara et al., 2024) and extends it with novel governance patterns (Brambilla & Plebani, 2025) and automation capabilities (Wider et al., 2025).
 
 ### Key Value Propositions
 
@@ -485,7 +485,7 @@ graph LR
 
 #### Policy Mixins
 
-Reusable policy patterns defined in `governance/mixins.k`:
+Reusable policy patterns defined in `governance/mixins.k`. These mixins implement tag-triggered policy activation, enabling automated compliance checking as explored in Wider et al. (2025)'s work on AI-assisted data governance:
 
 | Mixin | Triggered By | Compliance | Constraints |
 |-------|--------------|------------|-------------|
@@ -520,6 +520,8 @@ Reusable policy patterns defined in `governance/mixins.k`:
 ## Hierarchy & Policy Cascading
 
 ### Policy Propagation Model
+
+CDMesh API implements **federated policy cascading** with O(D) complexity, inspired by the scalable policy-as-code architecture proposed by Brambilla & Plebani (2025) for data products. Their work on Policy Decision Points (PDPs) and Policy Enforcement Points (PEPs) informs our compile-time validation approach, where policies are distributed hierarchically rather than evaluated centrally at runtime.
 
 ```mermaid
 graph TD
@@ -600,8 +602,9 @@ If Product A has tag `"PII"` and Product C depends on Product A, then Product C 
 
 **Key Concepts**:
 - Infrastructure is generated from declarative contracts, not manually configured
-- Policy cascading achieves O(D) complexity vs O(T) tuple-based systems
-- Federated governance enables domain autonomy with global compliance
+- Policy cascading achieves O(D) complexity vs O(T) tuple-based systems (Brambilla & Plebani, 2025)
+- Federated governance enables domain autonomy with global compliance (Dolhopolov et al., 2024)
+- Practical implementation patterns validated in production environments (Kumara et al., 2024)
 
 ### Pillar 3: Contract Driven Lifecycle (CDL)
 
@@ -615,6 +618,7 @@ If Product A has tag `"PII"` and Product C depends on Product A, then Product C 
 - Policy violations caught during `kcl run`, not in production
 - Constraint propagation via taint analysis (tag inheritance)
 - Compile-time validation eliminates runtime governance overhead
+- Shift-left governance reduces manual policy evaluation workload (Wider et al., 2025)
 
 ## Structure & Organization
 
@@ -690,7 +694,7 @@ cdmesh-api/
 |-------|------|--------|-------------|
 | 1 | Foundation | ✅ Complete | MeshNode, governance, semantics |
 | 2 | Hierarchy Enhancement | ✅ Complete | 6-level hierarchy with Organization and Component layers |
-| 3 | Case Study | 📋 Planned | Kart Recommendation System with PII constraint propagation |
+| 3 | Case Study | 📋 Planned | Kart Recommendation System with PII constraint propagation (following Kumara et al. 2024 case study methodology) |
 | 4 | Kubernetes Adapter | 📋 Planned | Product/Component → K8s Deployment/Service transpiler |
 | 5 | ODCS Integration | 📋 Planned | Bidirectional ODCS adapter for industry standard compatibility |
 | 6 | Semantic Layer | 📋 Planned | Relationship schemas (IS_A, PART_OF, DERIVES_FROM) |
@@ -762,10 +766,21 @@ cdmesh-api/
 ### Foundational Papers
 
 1. **Goedegebuure et al. (2023)**: "Data Mesh: a Systematic Gray Literature Review" - *ACM Computing Surveys*
+   - Systematic review of data mesh literature, establishing core principles and patterns
 2. **van der Werf et al. (2025)**: "Towards a Data Mesh Reference Architecture" - *Springer LNBIP*
-3. **Dolhopolov et al. (2024)**: "Implementing Federated Governance in Data Mesh Architecture" - *MDPI Future Internet*
-4. **Pingos et al. (2024)**: "Transforming Data Lakes to Data Meshes Using Semantic Data Blueprints" - *ENASE 2024*
-5. **Hogan et al. (2021)**: "Knowledge Graphs" - *ACM Computing Surveys*
+   - Proposes comprehensive reference architecture for data mesh implementations
+3. **Kumara et al. (2024)**: "Data Mesh Architecture: From Theory to Practice" - *ICSA 2024 (IEEE)*
+   - Tutorial covering practical implementation of data mesh with case studies from Netherlands and Germany
+4. **Dolhopolov et al. (2024)**: "Implementing Federated Governance in Data Mesh Architecture" - *MDPI Future Internet*
+   - Addresses federated governance patterns and implementation strategies
+5. **Brambilla & Plebani (2025)**: "Scalable Policy-as-Code Decision Points for Data Products" - *ICWS 2025 (IEEE)*
+   - Introduces scalable PDP/PEP architecture for policy-as-code in data mesh, addressing policy distribution and consistency
+6. **Pingos et al. (2024)**: "Transforming Data Lakes to Data Meshes Using Semantic Data Blueprints" - *ENASE 2024*
+   - Demonstrates semantic blueprints for data lake to data mesh transformation
+7. **Hogan et al. (2021)**: "Knowledge Graphs" - *ACM Computing Surveys*
+   - Comprehensive survey of knowledge graph technologies and ontological reasoning
+8. **Wider et al. (2025)**: "AI-Assisted Data Governance with Data Mesh Manager" - *ICWS 2025 (IEEE)*
+   - Explores LLM-based automation for data governance compliance checking and policy evaluation
 
 ### Design Patterns
 

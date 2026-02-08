@@ -801,11 +801,37 @@ Policies apply to all catalog entities:
 - **Compile-Time Validation**: Shift-left governance verification
 - **Tag-Triggered Constraints**: Automated policy application
 
+**Reference**: Dolhopolov, A., et al. (2024). "Implementing Federated Governance in Data Mesh Architecture." *MDPI Future Internet*, Vol. 16, Issue 4.
+
 ### Data Mesh Reference Architecture (van der Werf et al., 2025)
 
 - **Federated Computational Governance**: Domain autonomy with global compliance
 - **Policy as Code**: Declarative, version-controlled governance
 - **Constraint Propagation**: Taint analysis for data sensitivity
+
+**Reference**: van der Werf, J. M., et al. (2025). "Towards a Data Mesh Reference Architecture." *Springer LNBIP - Enterprise Design, Operations, and Computing*.
+
+### Scalable Policy-as-Code (Brambilla & Plebani, 2025)
+
+- **Policy Decision Points (PDPs)**: Distributed policy evaluation architecture
+- **Policy Enforcement Points (PEPs)**: Scalable enforcement with minimal central coordination
+- **Hybrid Approach**: Balances policy consistency with system scalability
+- **Dependency Management**: Graph-based policy dependencies for optimal distribution
+
+**Reference**: Brambilla, M., & Plebani, P. (2025). "Scalable Policy-as-Code Decision Points for Data Products." *IEEE International Conference on Web Services (ICWS)*.
+
+**CDMesh Implementation**: While Brambilla & Plebani focus on runtime PDPs, CDMesh extends this to **compile-time policy validation**, achieving zero runtime overhead through KCL's shift-left validation.
+
+### AI-Assisted Governance (Wider et al., 2025)
+
+- **LLM-Based Policy Evaluation**: Using GPT-4 for automated compliance checking
+- **Access Request Validation**: AI-assisted evaluation of data access requests against policies
+- **Policy Violation Detection**: Automated identification of constraint violations
+- **Governance Automation**: Reducing manual workload in policy verification
+
+**Reference**: Wider, A., Harrer, S., & Dietz, L. W. (2025). "AI-Assisted Data Governance with Data Mesh Manager." *IEEE International Conference on Web Services (ICWS)*.
+
+**CDMesh Opportunity**: Future integration could leverage LLMs for policy authoring assistance and natural language policy queries.
 
 ### Contract-Driven Lifecycle (CMA Pillar)
 

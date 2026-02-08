@@ -1624,12 +1624,17 @@ Discovery entities can have **SemanticMetadata**:
 
 Discovery schemas are grounded in academic research:
 
-### Data Mesh Principles (Dehghani, 2022; van der Werf et al., 2025)
+### Data Mesh Principles (Dehghani, 2022; van der Werf et al., 2025; Kumara et al., 2024)
 
 - **Domain Ownership**: Domain as business capability boundary
 - **Data as a Product**: Product with clear interfaces and SLAs
 - **Self-Serve Platform**: Ports as standardized interfaces
 - **Federated Governance**: O(D) policy cascading
+
+**References**:
+- Dehghani, Z. (2022). *Data Mesh: Delivering Data-Driven Value at Scale*. O'Reilly Media.
+- van der Werf, J. M., et al. (2025). "Towards a Data Mesh Reference Architecture." *Springer LNBIP*.
+- Kumara, I., et al. (2024). "Data Mesh Architecture: From Theory to Practice." *ICSA 2024 (IEEE)* - Practical implementation patterns validated in production environments across Netherlands and Germany organizations.
 
 ### Domain-Driven Design (Evans, 2003)
 
