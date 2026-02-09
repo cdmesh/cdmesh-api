@@ -1,0 +1,21 @@
+[dependencies]
+  [dependencies.api-mesh]
+    name = "api-mesh"
+    full_name = "api-mesh_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.cdmesh-api]
+    name = "cdmesh-api"
+    full_name = "cdmesh-api_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.identity-domain]
+    name = "identity-domain"
+    full_name = "identity-domain_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.kubernetes-components]
+    name = "kubernetes-components"
+    full_name = "kubernetes-components_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.platform-org]
+    name = "platform-org"
+    full_name = "platform-org_0.2.1-alpha"
+    version = "0.2.1-alpha"

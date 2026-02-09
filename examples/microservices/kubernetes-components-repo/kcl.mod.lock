@@ -1,0 +1,5 @@
+[dependencies]
+  [dependencies.cdmesh-api]
+    name = "cdmesh-api"
+    full_name = "cdmesh-api_0.2.1-alpha"
+    version = "0.2.1-alpha"

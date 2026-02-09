@@ -1,0 +1,21 @@
+[dependencies]
+  [dependencies.acme-domain]
+    name = "acme-domain"
+    full_name = "acme-domain_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.acme-mesh]
+    name = "acme-mesh"
+    full_name = "acme-mesh_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.acme-org]
+    name = "acme-org"
+    full_name = "acme-org_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.cdmesh-api]
+    name = "cdmesh-api"
+    full_name = "cdmesh-api_0.2.1-alpha"
+    version = "0.2.1-alpha"
+  [dependencies.databricks-components]
+    name = "databricks-components"
+    full_name = "databricks-components_0.2.1-alpha"
+    version = "0.2.1-alpha"

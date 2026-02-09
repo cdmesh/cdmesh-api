@@ -1,8 +1,8 @@
 docs-api:
     kcl doc generate
 
-example-databricks-etl:
-    kcl examples/databricks_etl_composite.k
+example-databricks:
+    kcl examples/databricks/acme-product-repo/discovery/product.k
 
 example-microservices:
-    kcl examples/microservices_composite.k
+    kcl examples/microservices/api-platform-product-repo/discovery/product.k

@@ -2,11 +2,11 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![KCL](https://img.shields.io/badge/KCL-v0.11.2-green.svg)](https://kcl-lang.io)
-[![Version](https://img.shields.io/badge/version-0.2.0--alpha-orange.svg)](https://github.com/yourusername/cdmesh-api/releases)
+[![Version](https://img.shields.io/badge/version-0.2.1--alpha-orange.svg)](https://github.com/yourusername/cdmesh-api/releases)
 
 > **⚠️ Early Development Notice**
 >
-> CDMesh API is currently in the early alpha stage (v0.2.0-alpha). The API specification is under active development and
+> CDMesh API is currently in the early alpha stage (v0.2.1-alpha). The API specification is under active development and
 > subject to breaking changes. This project is intended for research, experimentation, and early feedback. Production use
 > is not recommended at this stage.
 
@@ -40,6 +40,111 @@ CDMesh API implements **Composable Mesh Architecture (CMA)** with three foundati
 This approach reduces governance overhead by **2,500x** compared to traditional tuple-based systems, enabling scalable
 federated governance across heterogeneous data and service architectures.
 
+## Composable Mesh Architecture Vision
+
+CMA represents a paradigm evolution from "governance management" to **"governance engineering"** – positioning CDMesh API as an open-source standard for AI-first distributed applications.
+
+### 1. Governance Programming DSL
+Transform governance from configuration to **executable code** with:
+- Policy mixins as **composable governance modules**
+- Lambda-based constraints for dynamic computation
+- Smart defaults via context-aware governance
+- Shift from "what policies exist" to "how policies compute"
+
+### 2. KCL Modular Ecosystem
+Build a reusable component marketplace with:
+- Organization modules as **reusable governance packages**
+- Domain modules as **business capability libraries**
+- Provider-specific abstractions (GCP, AWS, Azure, Databricks, Snowflake)
+- Convention-over-configuration repository structure
+- OCI registry for module publishing and versioning
+
+### 3. Contract Driven Lifecycle (CDL)
+Expand beyond infrastructure to **full project lifecycle**:
+- Generate Agile artifacts (epics, stories, Definition of Ready)
+- Support all phases: plan → build → deploy → govern → operate
+
+### 4. AI-First Architecture
+Enable autonomous governance through AI:
+- Knowledge Graph construction from semantic metadata
+- GraphRAG integration for AI agent reasoning
+- Declarative DSL as **semantic context** for LLM agents
+- Automated governance validation through AI-assisted checks
+
+### 5. Multi-Cloud & Portability
+Achieve true vendor-agnostic abstractions:
+- Single contract → multiple cloud deployments
+- Provider modules for cloud portability (AWS, GCP, Azure, Databricks)
+- Export to YAML, JSON, OpenAPI, Terraform, ODCS
+- Industry alignment with emerging standards (MCP, A2A protocols)
+
+## Why KCL for CMA DSL
+
+CDMesh API is built with **KCL (Kubernetes Configuration Language)** to solve critical limitations of YAML-based configuration management.
+
+### YAML Limitations
+
+Traditional YAML configurations suffer from:
+- ❌ **No Modularity** – Monolithic 1000+ line files with massive duplication
+- ❌ **No Programming Constructs** – No variables, functions, conditionals, or loops
+- ❌ **Runtime-Only Validation** – Errors discovered at deployment time (minutes/hours)
+- ❌ **No Semantic Layer** - Cannot model relationships or data lineage
+- ❌ **Fragmented Tooling** – Different templating for each use case (Helm, Jinja2, etc.)
+
+### KCL Advantages
+
+KCL provides:
+- ✅ **True Modularity** - Project-based structure with `kcl.mod` and dependency management
+- ✅ **Full Programming** – Lambdas, conditionals, loops, type checking, inheritance
+- ✅ **Compile-Time Validation** – Fast feedback (seconds) with shift-left governance
+- ✅ **Rich Semantics** – RDF integration for knowledge graphs and AI reasoning
+- ✅ **Universal Export** – Generate YAML, JSON, OpenAPI, ODCS, Terraform from single source
+- ✅ **Multi-Language SDKs** – Python, Go, Java, Node.js, Rust for tool integration
+
+### Example: Reusability
+
+**YAML (copy-paste for every service):**
+```yaml
+# Repeated for EVERY microservice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-a
+  labels:
+    app: service-a
+# ... 50+ lines duplicated
+```
+
+**KCL (reusable module):**
+```kcl
+# Define once, import everywhere
+import kubernetes_components.service.rest_api as api
+
+myService = api.restApiTemplate {
+    name = "service-a"
+}
+```
+
+### Export Compatibility
+
+KCL maintains **full backward compatibility**:
+
+```bash
+# Compile KCL to YAML for Kubernetes
+kcl run product.k -o kubernetes.yaml
+
+# Compile KCL to JSON for Terraform
+kcl run product.k -o terraform.json
+
+# Compile KCL to OpenAPI spec
+kcl run product.k -o openapi.yaml
+
+# Compile KCL to ODCS contract
+kcl run product.k -o odcs-v3.yaml
+```
+
+**Learn more**: [KCL Official Website](https://www.kcl-lang.io/)
+
 ## Table of Contents
 
 - [Documentation](#documentation)
@@ -56,6 +161,7 @@ federated governance across heterogeneous data and service architectures.
     - [Foundational Papers](#foundational-papers)
     - [Books](#books)
 - [Development](#development)
+- [What's Next?](#whats-next)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -165,10 +271,11 @@ Demonstrates a multi-component ETL pipeline with bronze, silver, and gold layers
 **Microservices Composite Example:**
 
 ```bash
-just example-microservices
+cd examples/microservices/api-platform-product-repo
+kcl run discovery/product.k
 ```
 
-Demonstrates a microservices API platform with service mesh patterns.
+Demonstrates a microservices API platform with service mesh patterns using **multi-repo structure** with module imports.
 
 #### Validate Schemas
 
@@ -204,18 +311,33 @@ Executes KCL test suites.
 
 ### Examples
 
-The `examples/` directory contains reference implementations demonstrating CMA patterns:
+The `examples/` directory contains reference implementations demonstrating CMA patterns using **modular multi-repo structure**:
 
-- **`databricks_etl_composite.k`**: Multi-component ETL pipeline with bronze→silver→gold data flow
-- **`microservices_composite.k`**: Microservices API platform with service mesh composition
+#### Databricks ETL Pipeline (`examples/databricks/`)
+Multi-component ETL pipeline with bronze→silver→gold data flow:
+- `acme-org-repo/` - Organization definition
+- `acme-mesh-repo/` - Data Mesh definition
+- `acme-domain-repo/` - Customer domain
+- `acme-product-repo/` - ETL Product with component composition
+- `databricks-components-repo/` - Reusable Databricks component templates
+
+#### Microservices API Platform (`examples/microservices/`)
+Microservices API platform with service mesh composition:
+- `platform-org-repo/` - Platform organization
+- `api-mesh-repo/` - API service mesh
+- `identity-domain-repo/` - Identity & access management domain
+- `api-platform-product-repo/` - API platform with microservice composition
+- `kubernetes-components-repo/` - Reusable Kubernetes component templates
 
 Each example showcases:
 
-- Product composition with multiple components
-- Component graph wiring with explicit data flow
-- Port-based interfaces (data/service/event)
-- Policy cascading and governance
-- Semantic metadata integration
+- **Module-based structure** with `kcl.mod` dependencies
+- **Governance cascade** from Organization → Mesh → Domain → Product
+- **Component reusability** via template + instance pattern
+- **Product composition** with multiple components
+- **Component graph wiring** with explicit data flow
+- **Port-based interfaces** (data/service/event)
+- **Convention-over-configuration** repository layout
 
 ## Architecture
 
@@ -353,7 +475,7 @@ cdmesh-api/
 
 - **Module name**: `cdmesh-api`
 - **KCL edition**: `v0.11.2`
-- **Version**: `0.2.0-alpha`
+- **Version**: `0.2.1-alpha`
 - **Registry**: `oci://ghcr.io/<owner>/cdmesh-api`
 
 ### Release Process
@@ -363,6 +485,58 @@ Releases are automated via GitHub Actions:
 - Tag format: `v*` (e.g., `v0.2.0`)
 - Workflow: `.github/workflows/release.yaml`
 - Publishes to GitHub Container Registry (GHCR)
+
+## What's Next?
+
+CDMesh API roadmap includes ambitious features to realize the full governance engineering vision:
+
+### Phase 1: Module Ecosystem
+- Publish provider modules to OCI registry (GHCR)
+- Create reusable component marketplace (Databricks, K8s, AWS)
+- Establish convention-over-configuration patterns
+
+### Phase 2: Examples Expansion
+- ✅ Microservices multi-repo structure (Complete)
+- ML Pipeline example with MLOps patterns
+- Multi-cloud deployment examples (AWS Data Lake, GCP BigQuery)
+
+### Phase 3: Governance Programming
+- Lambda-based constraints in Policy schema
+- Context-aware policies (dev/staging/prod)
+- Smart defaults (encryption algorithms based on classification)
+
+### Phase 4: AI-First Integration
+- Enhanced semantic metadata (Relationship, ReasoningContext, ProvenanceMetadata)
+- Knowledge graph construction pipeline (KCL → RDF → SurrealDB)
+- GraphRAG proof-of-concept for policy impact analysis
+
+### Phase 5: CDL Artifact Generation
+- Epic generator (Product → Epic template with KCL Python SDK)
+- User story generator (Component → Story with technical specs)
+- CLI tools using KCL SDKs (`cdmesh-cli generate`)
+
+### Phase 6: Multi-Cloud Portability
+- Component resolution logic (`cdmesh-cli resolve`)
+- Same product deployed to AWS, GCP, Azure
+- Cost optimization recommendations
+
+### Phase 7: Documentation & Standards
+- Comprehensive guides (governance programming, module ecosystem, AI integration)
+- Academic paper updates
+- CNCF sandbox project submission (if ready)
+
+### Phase 8: Testing & Release
+- v0.2.1-alpha release with all modules published
+- Community announcement and ecosystem launch
+
+### Future Releases (0.3.0+)
+- ODCS bidirectional adapter
+- ReBAC (Relationship-Based Access Control)
+- Full AI agent framework for autonomous governance
+- VS Code extension with KCL LSP integration
+- Enterprise features (RBAC, audit trails)
+
+**Target Release**: v0.2.1-alpha by 2026-03-15
 
 ## Contributing
 
