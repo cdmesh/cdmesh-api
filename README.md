@@ -25,7 +25,7 @@ The project combines:
 ### The Problem
 
 Modern data platforms face a critical governance challenge: as organizations scale to thousands of data products and
-services, traditional tuple-based governance systems require O(T) operations for policy updates, where T ≈ 10,000. This
+services, traditional tuple-based governance systems require O(T) operations for policy updates, where is the number of tables. This
 creates bottlenecks in compliance, security, and operational efficiency.
 
 ### The Solution
