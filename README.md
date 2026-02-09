@@ -154,7 +154,7 @@ kcl run product.k -o odcs-v3.yaml
 - [Architecture](#architecture)
 - [Schema Reference](#schema-reference)
 - [Standards Compliance](#standards-compliance)
-- [Academic Foundation](#academic-foundation)
+- [Theoretical Foundation](#theoretical-foundation)
     - [Foundational Papers](#foundational-papers)
     - [Books](#books)
 - [Development](#development)
