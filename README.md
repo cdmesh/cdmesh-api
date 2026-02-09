@@ -37,9 +37,6 @@ CDMesh API implements **Composable Mesh Architecture (CMA)** with three foundati
    achieving O(D) complexity where D ≈ 4
 3. **Contract Driven Lifecycle (CDL)**: Compile-time governance verification with shift-left validation
 
-This approach reduces governance overhead by **2,500x** compared to traditional tuple-based systems, enabling scalable
-federated governance across heterogeneous data and service architectures.
-
 ## Composable Mesh Architecture Vision
 
 CMA represents a paradigm evolution from "governance management" to **"governance engineering"** – positioning CDMesh API as an open-source standard for AI-first distributed applications.
@@ -263,7 +260,7 @@ This generates the complete API reference documentation from KCL schemas to `doc
 **Databricks ETL Composite Example:**
 
 ```bash
-just example-databricks-etl
+just example-databricks
 ```
 
 Demonstrates a multi-component ETL pipeline with bronze, silver, and gold layers using Databricks.
@@ -271,8 +268,7 @@ Demonstrates a multi-component ETL pipeline with bronze, silver, and gold layers
 **Microservices Composite Example:**
 
 ```bash
-cd examples/microservices/api-platform-product-repo
-kcl run discovery/product.k
+just example-microservices
 ```
 
 Demonstrates a microservices API platform with service mesh patterns using **multi-repo structure** with module imports.
@@ -403,12 +399,12 @@ CDMesh API aligns with multiple industry and academic standards:
 
 ### Planned Standards
 
-- **ODCS v3.1.0** (Open Data Contract Standard) – Phase 5
-- **OpenLineage** – Data lineage tracking (Priority 3)
-- **W3C PROV** - Provenance vocabulary (Priority 3)
-- **ReBAC** - Relationship-Based Access Control (Phase 7)
+- **ODCS v3.1.0** (Open Data Contract Standard)
+- **OpenLineage** – Data lineage tracking
+- **W3C PROV** - Provenance vocabulary
+- **ReBAC** - Relationship-Based Access Control
 
-## Academic Foundation
+## Theoretical Foundation
 
 CDMesh API is grounded in peer-reviewed research and industry best practices.
 
@@ -491,8 +487,8 @@ Releases are automated via GitHub Actions:
 CDMesh API roadmap includes ambitious features to realize the full governance engineering vision:
 
 ### Phase 1: Module Ecosystem
-- Publish provider modules to OCI registry (GHCR)
-- Create reusable component marketplace (Databricks, K8s, AWS)
+- Publish provider modules to the OCI registry (GHCR)
+- Create a reusable component marketplace (Databricks, K8s, AWS)
 - Establish convention-over-configuration patterns
 
 ### Phase 2: Examples Expansion
@@ -529,14 +525,12 @@ CDMesh API roadmap includes ambitious features to realize the full governance en
 - v0.2.1-alpha release with all modules published
 - Community announcement and ecosystem launch
 
-### Future Releases (0.3.0+)
+### Future Releases
 - ODCS bidirectional adapter
 - ReBAC (Relationship-Based Access Control)
 - Full AI agent framework for autonomous governance
 - VS Code extension with KCL LSP integration
 - Enterprise features (RBAC, audit trails)
-
-**Target Release**: v0.2.1-alpha by 2026-03-15
 
 ## Contributing
 
@@ -550,7 +544,7 @@ Contributions are welcome! Please note that this project is in early alpha stage
 
 ## License
 
-Apache License 2.0 - See [LICENSE](LICENSE) for details.
+Apache License 2.0 – See [LICENSE](LICENSE) for details.
 
 ---
 
